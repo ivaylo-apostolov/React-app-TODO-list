@@ -1,6 +1,6 @@
 import React from "react";
 
-const tasksList = (props) => {
+const TasksList = (props) => {
   return (
     <div className="tasksList">
       <ul>{props.tasksList}</ul>
@@ -8,4 +8,4 @@ const tasksList = (props) => {
   );
 };
 
-export default tasksList;
+export default TasksList;

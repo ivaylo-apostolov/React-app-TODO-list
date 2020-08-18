@@ -1,6 +1,6 @@
 import React from 'react';
 
-const inputText = (props) => {
+const InputText = (props) => {
     return (
         <div className = 'inputText'>
             <label>{props.labelText}
@@ -11,4 +11,4 @@ const inputText = (props) => {
     )
 }
 
-export default inputText;
+export default InputText;
