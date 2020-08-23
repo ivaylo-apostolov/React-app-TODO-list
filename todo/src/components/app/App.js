@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Input from "../input/Input";
 import Button from "../button/Button";
 import Task from "../task/Task";
@@ -6,8 +6,7 @@ import TasksList from "../tasksList/TasksList";
 import "./App.css";
 
 const App = () => {
-  debugger;
-  const [state, setState] = useState({
+  const [repo, setRepo] = useState({
     tasks: [
       {
         name: "Initial task",
@@ -19,34 +18,34 @@ const App = () => {
     toShow: "TODO",
   });
 
+  useEffect(() => {
+    document.title = `There are ${repo.tasks.length} tasks`;
+  })
+
   const inputChange = (event) => {
-    let inputValue = state.inputContent;
+    let inputValue = repo.inputContent;
     inputValue = event.target.value;
-    setState({ inputContent: inputValue });
+    setRepo({...repo, inputContent: inputValue})
   };
 
   const addTaskToList = () => {
     let newTask = {
-      name: state.inputContent,
+      name: repo.inputContent,
       status: "TODO",
-      id: state.inputContent,
+      id: repo.inputContent,
     };
-    let taskExists = state.tasks.filter((task) => task.name === newTask.name);
+    let taskExists = repo.tasks.filter((task) => task.name === newTask.name);
     if (!taskExists.length) {
-      setState({
-        tasks: [...state.tasks, newTask],
-      });
+      setRepo({...repo, tasks: [...repo.tasks, newTask]})
     }
   };
 
   const showChoosenTasks = (choosenTaskName) => {
-    setState({
-      toShow: choosenTaskName,
-    });
+    setRepo({...repo, toShow: choosenTaskName})
   };
 
   const changeStatus = (taskIndex) => {
-    let task = { ...state.tasks[taskIndex] };
+    let task = repo.tasks[taskIndex];
     if (task.status === "TODO") {
       task.status = "In Progress";
     } else if (task.status === "In Progress") {
@@ -54,17 +53,18 @@ const App = () => {
     } else if (task.status === "Done") {
       task.status = "TODO";
     }
-    const tasksArr = [...state.tasks];
+    const tasksArr = repo.tasks;
     tasksArr[taskIndex] = task;
-    setState({
-      tasks: tasksArr,
-    });
+    setRepo(
+      {...repo, tasks: tasksArr}
+    );
+
   };
 
-  const render = () => {
-    const tasks = state.tasks;
+  
+    const tasks = repo.tasks;
     const tasksLst = tasks
-      .filter((task) => task.status === state.toShow || state.toShow === "All")
+      .filter((task) => task.status === repo.toShow || repo.toShow === "All")
       .map((task, index) => {
         return (
           <Task
@@ -77,7 +77,7 @@ const App = () => {
       });
     let tasksList = (
       <div>
-        <TasksList tasksList={tasksLst} toShow={state.toShow} />
+        <TasksList tasksList={tasksLst} toShow={repo.toShow} />
       </div>
     );
 
@@ -103,9 +103,6 @@ const App = () => {
         </div>
       </div>
     );
-  };
-
-  return render;
 };
 
 export default App;
