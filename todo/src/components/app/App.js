@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Input from "../input/Input";
 import Button from "../button/Button";
 import Task from "../task/Task";
 import TasksList from "../tasksList/TasksList";
 import "./App.css";
 
-const App = () => {
+const App = React.memo((props) => {
   const [repo, setRepo] = useState({
     tasks: [
       {
@@ -28,7 +28,7 @@ const App = () => {
     setRepo({...repo, inputContent: inputValue})
   };
 
-  const addTaskToList = () => {
+  const addTaskToList = useCallback(() => {
     let newTask = {
       name: repo.inputContent,
       status: "TODO",
@@ -38,13 +38,13 @@ const App = () => {
     if (!taskExists.length) {
       setRepo({...repo, tasks: [...repo.tasks, newTask]})
     }
-  };
+  }, [repo.tasks]);
 
-  const showChoosenTasks = (choosenTaskName) => {
+  const showChoosenTasks = useCallback((choosenTaskName) => {
     setRepo({...repo, toShow: choosenTaskName})
-  };
+  }, [repo.tasks]);
 
-  const changeStatus = (taskIndex) => {
+  const changeStatus = useCallback((taskIndex) => {
     let task = repo.tasks[taskIndex];
     if (task.status === "TODO") {
       task.status = "In Progress";
@@ -58,9 +58,7 @@ const App = () => {
     setRepo(
       {...repo, tasks: tasksArr}
     );
-
-  };
-
+  }, [repo.tasks]);
   
     const tasks = repo.tasks;
     const tasksLst = tasks
@@ -95,14 +93,11 @@ const App = () => {
         <div>
           <Button click={() => showChoosenTasks("All")} btnName="Show All" />
           <Button click={() => showChoosenTasks("TODO")} btnName="Show TODO" />
-          <Button
-            click={() => showChoosenTasks("In Progress")}
-            btnName="Show In Progress"
-          />
+          <Button click={() => showChoosenTasks("In Progress")} btnName="Show In Progress"/>
           <Button click={() => showChoosenTasks("Done")} btnName="Show Done" />
         </div>
       </div>
     );
-};
+});
 
 export default App;
