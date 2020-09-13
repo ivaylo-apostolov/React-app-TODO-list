@@ -1,6 +1,6 @@
 import React from 'react';
 
-const InputText = (props) => {
+const InputText = React.memo((props) => {
     console.log("render input");
     return (
         <div className = 'inputText'>
@@ -10,6 +10,6 @@ const InputText = (props) => {
         </div>
 
     )
-}
+})
 
 export default InputText;

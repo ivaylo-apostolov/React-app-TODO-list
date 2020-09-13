@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
-const Task = React.memo((props) => {
+const Task = React.memo(({key, index, name, status, changeStatus}) => {
     console.log("render task");
     return (
-        <li key={props.key} onClick={props.click}>{props.name}----Status:{props.status}</li>
+        <li key={key} onClick={useCallback(() => changeStatus(index),[])} >{name}----Status:{status}</li>
     )
 })
 

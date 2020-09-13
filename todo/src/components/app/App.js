@@ -3,10 +3,24 @@ import Input from "../input/Input";
 import Button from "../button/Button";
 import Task from "../task/Task";
 import TasksList from "../tasksList/TasksList";
+import memoize from "fast-memoize";
 import "./App.css";
 
 const App = React.memo((props) => {
-  const [repo, setRepo] = useState({
+  console.log("render app");
+  // const [repo, setRepo] = useState({
+  //   tasks: [
+  //     {
+  //       name: "Initial task",
+  //       status: "TODO",
+  //       id: "Initial task",
+  //     },
+  //   ],
+  //   inputContent: "",
+  //   toShow: "TODO",
+  // });
+
+  const [todoList, setTodoList] = useState({
     tasks: [
       {
         name: "Initial task",
@@ -14,38 +28,40 @@ const App = React.memo((props) => {
         id: "Initial task",
       },
     ],
-    inputContent: "",
-    toShow: "TODO",
   });
 
+  const [input, setInput] = useState("");
+  const [show, setShow] = useState("TODO");
+
   useEffect(() => {
-    document.title = `There are ${repo.tasks.length} tasks`;
+    document.title = `There are ${todoList.tasks.length} tasks`;
   })
 
   const inputChange = (event) => {
-    let inputValue = repo.inputContent;
+    let inputValue = input.inputContent;
     inputValue = event.target.value;
-    setRepo({...repo, inputContent: inputValue})
+    setInput(inputValue);
   };
 
   const addTaskToList = useCallback(() => {
     let newTask = {
-      name: repo.inputContent,
+      name: input,
       status: "TODO",
-      id: repo.inputContent,
+      id: input,
     };
-    let taskExists = repo.tasks.filter((task) => task.name === newTask.name);
+    let taskExists = todoList.tasks.filter((task) => task.name === newTask.name);
     if (!taskExists.length) {
-      setRepo({...repo, tasks: [...repo.tasks, newTask]})
+      setTodoList({...todoList, tasks: [...todoList.tasks, newTask]})
     }
-  }, [repo.tasks]);
+  }, [todoList, input]);
 
-  const showChoosenTasks = useCallback((choosenTaskName) => {
-    setRepo({...repo, toShow: choosenTaskName})
-  }, [repo.tasks]);
+  const showChoosenTasks = (choosenTaskName) => {
+    setShow(choosenTaskName)
+  };
 
   const changeStatus = useCallback((taskIndex) => {
-    let task = repo.tasks[taskIndex];
+    console.log("task index", taskIndex);
+    let task = todoList.tasks[taskIndex];
     if (task.status === "TODO") {
       task.status = "In Progress";
     } else if (task.status === "In Progress") {
@@ -53,48 +69,46 @@ const App = React.memo((props) => {
     } else if (task.status === "Done") {
       task.status = "TODO";
     }
-    const tasksArr = repo.tasks;
+    const tasksArr = todoList.tasks;
     tasksArr[taskIndex] = task;
-    setRepo(
-      {...repo, tasks: tasksArr}
+    setTodoList(
+      {...todoList, tasks: tasksArr}
     );
-  }, [repo.tasks]);
-  
-    const tasks = repo.tasks;
+  }, [todoList]);
+     
+    const tasks = todoList.tasks;
     const tasksLst = tasks
-      .filter((task) => task.status === repo.toShow || repo.toShow === "All")
+      .filter((task) => task.status === show || show === "All")
       .map((task, index) => {
         return (
           <Task
-            click={() => changeStatus(index)}
+            changeStatus={changeStatus}
+            index={index}
             key={task.id}
             name={task.name}
             status={task.status}
           />
         );
       });
-    let tasksList = (
-      <div>
-        <TasksList tasksList={tasksLst} toShow={repo.toShow} />
-      </div>
-    );
 
     return (
       <div className="App">
         <h2>TODO list</h2>
         <Input
-          changed={(event) => {
+          changed={useCallback((event) => {
             inputChange(event);
-          }}
+          },[])}
           labelText="Task"
         />
         <Button click={addTaskToList} btnName="Add" />
-        {tasksList}
         <div>
-          <Button click={() => showChoosenTasks("All")} btnName="Show All" />
-          <Button click={() => showChoosenTasks("TODO")} btnName="Show TODO" />
-          <Button click={() => showChoosenTasks("In Progress")} btnName="Show In Progress"/>
-          <Button click={() => showChoosenTasks("Done")} btnName="Show Done" />
+          <TasksList tasksList={tasksLst} toShow={show} />
+        </div>
+        <div>
+          <Button click={useCallback(() => showChoosenTasks("All"),[])} btnName="Show All" />
+          <Button click={useCallback(() => showChoosenTasks("TODO"),[])} btnName="Show TODO" />
+          <Button click={useCallback(() => showChoosenTasks("In Progress"),[])} btnName="Show In Progress"/>
+          <Button click={useCallback(() => showChoosenTasks("Done"),[])} btnName="Show Done" />
         </div>
       </div>
     );
