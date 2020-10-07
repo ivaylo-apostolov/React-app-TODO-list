@@ -1,5 +1,5 @@
 const { createStore } = Redux;
-let state = 0;
+
 const counter = (state = 0, action) => {
   switch (action.type) {
     case "INCREMENT":
