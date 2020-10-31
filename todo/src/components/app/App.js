@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useToShow from "../../customHooks/useToShow";
-import useMousePosition from "../../customHooks/useMousePosition"
+import useMousePosition from "../../customHooks/useMousePosition";
 import Input from "../input/Input";
 import Button from "../button/Button";
 import Task from "../task/Task";
@@ -87,17 +87,23 @@ const App = React.memo((props) => {
       );
     });
 
+  const inputStyle = {
+    backgroundColor: "blue"
+  }
+
   return (
     <div className="App">
-      <h2>TODO list</h2>
-      <Input
-        changed={useCallback((event) => {
-          inputChange(event);
-        }, [])}
-        labelText="Task"
-      />
-      <Button click={addTaskToList} btnName="Add" />
-      <div>
+      <div className="input">
+        <h2>TODO list</h2>
+        <Input
+          changed={useCallback((event) => {
+            inputChange(event);
+          }, [])}
+          labelText="Task"
+        />
+        <Button click={addTaskToList} btnName="Add" />
+      </div>
+      <div className="tasksList">
         <TasksList tasksList={tasksLst} toShow={show} />
       </div>
       <div>

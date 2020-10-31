@@ -1,13 +1,27 @@
-let arr = 
-    [{
-        name: "Ivo"
-    },
-{
-    name: "Dani"
-}]
+let arr = [1,4,7,2,4];
+let obj = {name: "Ivo",
+age:36};
 
+let obj2 = {name: "Kiro",
+position: "dev",
+age:36};
 
+let obj3 = {
+    gender: "male"
+}
 
+function newObject(obj, obj2, obj3) {
+    return Object.assign({}, obj, obj2, obj3,  /*{name: "Daniel"}*/)
+}
+
+function newObjectSpread(obj, obj2, obj3) {
+    return {...obj, ...obj2, ...obj3, name: "Tarzan"}
+}
+
+let newObj = newObjectSpread(obj, obj2, obj3)
+
+console.log(obj);
+console.log(newObj);
 
 //1 * 2 * 3 * 4 * 5
 

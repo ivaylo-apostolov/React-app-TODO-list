@@ -1,6 +1,5 @@
 const { createStore } = Redux;
 
-// let state = {};
 let count = 0;
 
 const todo = (state, action) => {
