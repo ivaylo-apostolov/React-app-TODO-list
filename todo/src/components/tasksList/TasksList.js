@@ -2,10 +2,10 @@ import React from "react";
 
 import './TasksList.css'
 
-const TasksList = React.memo((props) => {
+const TasksList = React.memo(({tasksList}) => {
   return (
     <div className="tasksList">
-      <ul>{props.tasksList}</ul>
+      <ul>{tasksList}</ul>
     </div>
   );
 });

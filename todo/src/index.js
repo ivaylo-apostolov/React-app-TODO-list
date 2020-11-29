@@ -11,7 +11,7 @@ import store from './redux/simpleReduxApp'
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-    <App2/>
+      <App2/>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

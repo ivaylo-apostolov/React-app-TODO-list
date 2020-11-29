@@ -1,50 +1,68 @@
-let arr = [1,4,7,2,4];
-let obj = {name: "Ivo",
-age:36};
+const fetch = require("node-fetch")
 
-let obj2 = {name: "Kiro",
-position: "dev",
-age:36};
+// let prm = new Promise(function(res, rej) {
+//     setTimeout((() => res("ala-bala")), 1);
+// })
 
-let obj3 = {
-    gender: "male"
+// prm.then(function(result) {
+//     console.log(result);
+// })
+
+// let urls = [
+//     'https://api.github.com/users/iliakan',
+//     'https://api.github.com/users/remy',
+//     'https://api.github.com/users/jeresig'
+// ];
+
+// // map every url to the promise of the fetch
+// let requests = urls.map(url => fetch(url));
+
+// // Promise.all waits until all jobs are resolved
+// Promise.all(requests)
+//     .then(responses => responses.map(response => {
+//         console.log(response.status)
+//     }) );
+
+fetch('https://api.github.com/users/iliakan')
+    .then(res => res.json())
+    .then(res => console.log(typeof(res)))
+// console.log('ala-bala1')
+
+// async function showAvatar() {
+//     try {
+//         let response = await fetch('https://api.github.com/users/iliakan');
+//         let user = await response.json();
+//     } catch (error) {
+//         console.log(error);
+//     }
+// }
+
+// showAvatar();
+
+// function first() {
+//     console.log("inside first");
+//     return function second() {
+//         console.log("inside second");
+//         return function third() {
+//             console.log("inside third");
+//         }
+//     }
+// }
+
+// first()()();
+
+var info = {
+    age: 16
+};
+
+var age1 = 10;
+
+
+function print(age) {
+    age = 36;
 }
 
-function newObject(obj, obj2, obj3) {
-    return Object.assign({}, obj, obj2, obj3,  /*{name: "Daniel"}*/)
-}
-
-function newObjectSpread(obj, obj2, obj3) {
-    return {...obj, ...obj2, ...obj3, name: "Tarzan"}
-}
-
-let newObj = newObjectSpread(obj, obj2, obj3)
-
-console.log(obj);
-console.log(newObj);
-
-//1 * 2 * 3 * 4 * 5
-
-function factoriel(n) {
-    // 5 * 4 * 3 * 2 * 1
-    if(n === 1) {
-        return 1
-    }
-    return n * factoriel(n - 1)
-}
-console.log(factoriel(5))
+print(age1);
+console.log(info.age);
 
 
-//1,1,2,3,5,8,13,21,34,55
-function fibonaci(n) {
-    //6
-    if(n === 2 || n === 1) {
-        return 1
-    }
-    return fibonaci(n - 1) + fibonaci(n - 2)
-}
-
-console.log(fibonaci(20))
-// count(arr);
-
-// console.log(obj);

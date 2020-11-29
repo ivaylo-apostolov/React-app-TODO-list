@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
 import useToShow from "../../customHooks/useToShow";
 import useMousePosition from "../../customHooks/useMousePosition";
-import Input from "../input/Input";
-import Button from "../button/Button";
+import Input from "../Input/Input"
+import Button from "../button/button"
 import Task from "../task/Task";
 import TasksList from "../tasksList/TasksList";
 //import memoize from "fast-memoize";
