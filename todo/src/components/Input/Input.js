@@ -5,10 +5,9 @@ const InputText = React.memo((props) => {
     return (
         <div className = 'inputText'>
             <label>{props.labelText}
-            <input type = 'text' onChange = {props.changed}/>
+            <input type = 'text' onChange = {props.changed} title="TodoInput"/>
             </label>
         </div>
-
     )
 })
 

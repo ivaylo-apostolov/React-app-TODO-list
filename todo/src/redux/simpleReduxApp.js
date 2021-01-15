@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk';
 import { createSelector } from 'reselect';
+//import { normalize, scheme } from 'normalizr';
 
 let count = 0;
 
@@ -48,8 +49,7 @@ const getTodos = (state) => {
 export const getAllTodos = createSelector(getTodos, (todos) => {
   return todos;
 })
-
-const isLocked = (state, action) => {
+const isLocked = (state = true, action) => {
   switch (action.type) {
     case "LOCK":
       return true;
@@ -59,7 +59,6 @@ const isLocked = (state, action) => {
       return state
   }
 }
-
 const todos = (state = [5], action) => {
   console.log("in todos reducer");
   switch (action.type) {
@@ -71,30 +70,33 @@ const todos = (state = [5], action) => {
       return state;
   }
 };
-
-const users = (state = [{
-  "id": "01",
-  "name": "Ivo is not a boss",
-  "employer": {
-    name: "softserve",
-    country: {
-      name: "Bulgaria"
-    }
-  },
-  "employee_name": "Tiger Nixon",
-  "employee_salary": "320800",
-  "employee_age": "61",
-  "profile_image": ""
-}], action) => {
+const users = (state = { 1: {} }, action) => {
   switch (action.type) {
-    case "RECEIVE_USERS":
-      return [...action.users];
+    case "RECEIVE_DATA":
+      return action.data.entities.users;
     case "UPDATE_USER":
-      return [{...state[0], name: action.name}, ...state.slice(1)]
+      return { ...state, 1: {...state[1], name: action.name }}
+    default:
+      return state;
+  }
+}
+const employers = (state = { 1: {} }, action) => {
+  switch (action.type) {
+    case "RECEIVE_DATA":
+      return action.data.entities.employers;
     case "UPDATE_EMPLOYER":
-      return [{...state[0], employer: {...state[0].employer, name: action.name}}, ...state.slice(1)]
+      return {...state, 1: {...state[1], name: action.name}}
+    default:
+      return state;
+  }
+}
+
+const countries = (state = { 1: {} }, action) => {
+  switch (action.type) {
+    case "RECEIVE_DATA":
+      return action.data.entities.countries
     case "UPDATE_COUNTRY":
-      return [{...state[0], employer: {...state[0].employer, country: {...state[0].employer.country, name: action.name}}}]
+      return {...state, 1: {...state[1], name: action.name}}
     default:
       return state;
   }
@@ -105,31 +107,12 @@ const todoApp = (state = {}, action) => {
     todos: todos(state.todos, action),
     visibility: setVisibility(state.visibility, action),
     users: users(state.users, action),
-    isLocked: isLocked(state.locked, action)
+    isLocked: isLocked(state.locked, action),
+    employers: employers(state.employers, action),
+    countries: countries(state.countries, action)
   }
 }
 
 const store = createStore(todoApp, applyMiddleware(thunk));
 
 export default store;
-
-const obj = {
-  "id": "01",
-  "name": "Ivo is not a boss",
-  "employer": 1,
-  "employee_name": "Tiger Nixon",
-  "employee_salary": "320800",
-  "employee_age": "61",
-  "profile_image": ""
-}
-
-const employer = {
-  id: 1,
-  name: "softserve",
-  country: 2
-}
-
-const country = {
-  id: 2,
-  name: "Bulgaria"
-};

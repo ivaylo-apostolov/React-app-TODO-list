@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import withSing from '../../hoc/withSing'
 
 const mapStateToProps = (state) => {
     return {
@@ -11,23 +12,23 @@ const mapDispatchToProps = (dispatch) => {
         updateUser: () => {
             dispatch({
                 "type": "UPDATE_USER",
-                "name": "Dani boss"
+                "name": "Dani is a boss"
             })
         }
     }
 }
 
-const User = ({ users, updateUser }) => {
-    console.log("render users");
+const User = ({ users, updateUser, sing }) => {
+    sing();
     return (
         <div>
-            <button onClick={updateUser}>Change name</button>
-            {users[0].name}
+            <button onClick={updateUser}>Change user name</button>
+            {users[1].name}
         </div>
     )
 }
 
-var connectedComponent = connect(mapStateToProps, mapDispatchToProps)(User);
-
-export default connectedComponent;
+export default withSing(
+    connect(mapStateToProps, mapDispatchToProps)(
+        User), "I'm singing user")
 

@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import withSing from '../../hoc/withSing';
 
 const mapStateToProps = (state) => {
     return {
-        employer: state.users[0].employer
+        employer: state.employers
     }
 };
 const mapDispatchToProps = (dispatch) => {
@@ -11,23 +12,23 @@ const mapDispatchToProps = (dispatch) => {
         updateEmployer: () => {
             dispatch({
                 "type": "UPDATE_EMPLOYER",
-                "name": "Coursera"
+                "name": "Softserve2"
             })
         }
     }
 }
 
-const Employer = ({ employer, updateEmployer }) => {
-    console.log("render employer")
+const Employer = ({ employer, updateEmployer, sing }) => {
+    sing();
     return (
         <div>
-            <button onClick={updateEmployer}>Change name</button>
-            {employer.name}
+            <button onClick={updateEmployer}>Change employer name</button>
+            {employer[1].name}
         </div>
     )
 }
 
-var connectedComponent = connect(mapStateToProps, mapDispatchToProps)(Employer);
-
-export default connectedComponent;
+export default withSing(
+    connect(mapStateToProps, mapDispatchToProps)(
+        Employer), "I'm singing employer")
 

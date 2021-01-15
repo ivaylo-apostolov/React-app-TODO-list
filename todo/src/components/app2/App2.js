@@ -12,13 +12,14 @@ import ToggleLock from "../toggleLock/toggleLock";
 import Form from "../requests/form"
 import User from "../../components/users/user"
 import Employer from "../../components/users/employer"
+import Country from "../../components/users/country"
 //import "./App.css";
 
 const mapStateToProps = (state) => {
     return {
         //todos: state.todos,
         visibility: state.visibility,
-        //users: state.users,
+        users: state.users,
         todos: getAllTodos(state)
     }
 }
@@ -65,6 +66,7 @@ const App2 = React.memo((props) => {
         <div>
             <User />
             <Employer />
+            <Country />
             <Form />
             <ToggleLock text="Dummy text" />
             <Button btnName={"Fetch users"} click={() => props.fetchEmployees()}/>
